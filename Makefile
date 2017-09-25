@@ -10,4 +10,4 @@ publish:
 	git checkout -b gh-pages && \
 	git add . && \
 	git commit -am 'update gh-pages' && \
-	git push https://github.com/username/reponame gh-pages --force
+	git push https://github.com/realmadrid1902/ping-pong gh-pages --force
