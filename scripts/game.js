@@ -12,6 +12,11 @@ function game() {
         directionY: 1
     };
 
+    var score = {
+        pA: 0,
+        pB: 0
+    };
+
     var paddleA = {
         speed: 5,
         x: parseInt($("#paddleA").width() + $("#paddleA").position().left),
@@ -38,9 +43,13 @@ function game() {
         }
     };
 
+    var pauseBall = false;
+
     function moveBall() {
         var gameWidth = parseInt($("#game").width());
         var gameHeight = parseInt($("#game").height());
+
+        if (pauseBall) return;
 
         if (ball.y + ball.speed * ball.directionY > (gameHeight - parseInt($("#ball").height()))) {
             ball.directionY = -1
@@ -53,11 +62,21 @@ function game() {
 
         if (ball.x + ball.speed * ball.directionX > (gameWidth - parseInt($("#ball").width()))) {
             ball.directionX = -1
+            ball.x = 290;
+            ball.y = 140;
+            pauseBall = true;
+            $("#ball").animate({ "left": ball.x, "top": ball.y }, 2000, function () { pauseBall = false; });
+
         }
 
         if (ball.x + ball.speed * ball.directionX < 0) {
             ball.directionX = 1
+            ball.x = 290;
+            ball.y = 140;
+            pauseBall = true;
+            $("#ball").animate({ "left": ball.x, "top": ball.y }, 2000, function () { pauseBall = false; });
         }
+
 
         // paddleA
 
@@ -72,9 +91,9 @@ function game() {
 
         // paddleB
         if (paddleB.y2 > ball.y && ball.y > paddleB.y1) {
-            if (ball.x > parseInt($("#paddleB").position().left)) {
+            if (ball.x + $("#ball").width() > parseInt($("#paddleB").position().left)) {
                 ball.directionX = -1
-                if (ball.x < parseInt($("#paddleB").width() + $("#paddleB").position().left)) {
+                if (ball.x > parseInt($("#paddleB").width() + $("#paddleB").position().left)) {
                     ball.directionX = 1
                 }
             }
@@ -106,11 +125,11 @@ function game() {
             if (!directions.hasOwnProperty(i)) continue;
             //console.log(i);
 
-            if (pad1.position().top > 0 && i == 38) {
+            if (pad1.position().top > 0 && i == 81) {
                 pad1.css("top", (pad1.position().top - speed) + "px");
             }
 
-            if (pad1.position().top < ($("#game").height() - pad1.height()) && i == 40) {
+            if (pad1.position().top < ($("#game").height() - pad1.height()) && i == 65) {
                 pad1.css("top", (pad1.position().top + speed) + "px");
             }
         }
@@ -122,11 +141,11 @@ function game() {
             if (!directions.hasOwnProperty(i)) continue;
             //console.log(i);
 
-            if (pad2.position().top > 0 && i == 37) {
+            if (pad2.position().top > 0 && i == 38) {
                 pad2.css("top", (pad2.position().top - speed) + "px");
             }
 
-            if (pad2.position().top < ($("#game").height() - pad2.height()) && i == 39) {
+            if (pad2.position().top < ($("#game").height() - pad2.height()) && i == 40) {
                 pad2.css("top", (pad2.position().top + speed) + "px");
             }
         }
